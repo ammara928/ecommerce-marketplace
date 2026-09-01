@@ -1,0 +1,127 @@
+{% extends 'store/main.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+
+
+<!-- PRODUCT IMAGE -->
+<div class="col-lg-6">
+    <div class="box-element">
+
+        {% if product.image %}
+            <img class="img-fluid"
+                 src="{{ product.image.url }}"
+                 alt="{{ product.name }}"
+                 style="width:100%; max-height:500px; object-fit:contain;">
+        {% else %}
+            <p>No image available</p>
+        {% endif %}
+
+    </div>
+</div>
+
+
+<!-- PRODUCT INFORMATION -->
+<div class="col-lg-6">
+    <div class="box-element">
+
+        <h2>{{ product.name }}</h2>
+
+        <hr>
+
+        <!-- PRICE -->
+        <h3>${{ product.price }}</h3>
+
+        <hr>
+
+        <!-- DESCRIPTION -->
+        {% if product.description %}
+            <h5>Product Description</h5>
+            <p>{{ product.description }}</p>
+        {% else %}
+            <p>No description available for this product.</p>
+        {% endif %}
+
+        <br>
+
+        <!-- ADD TO CART BUTTON -->
+        <button data-product="{{ product.id }}"
+                data-action="add"
+                class="btn btn-success update-cart">
+            Add to Cart
+        </button>
+
+        <!-- BACK BUTTON -->
+        <a href="{% url 'store' %}"
+           class="btn btn-outline-dark">
+            ← Continue Shopping
+        </a>
+
+    </div>
+</div>
+
+
+</div>
+
+<br>
+<br>
+
+<!-- ================= REVIEWS SECTION ================= -->
+
+<div class="row">
+
+
+<div class="col-lg-12">
+
+    <div class="box-element">
+
+        <h3>⭐ Customer Reviews</h3>
+
+        <hr>
+
+        {% if reviews %}
+
+            {% for review in reviews %}
+
+                <div style="padding:15px;">
+
+                    <h5>
+                        ⭐ Rating: {{ review.rating }}/5
+                    </h5>
+
+                    <strong>
+                        {{ review.customer.user.username }}
+                    </strong>
+
+                    <p>{{ review.comment }}</p>
+
+                    <small>
+                        {{ review.created_at|date:"M d, Y" }}
+                    </small>
+
+                </div>
+
+                <hr>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>No reviews yet for this product.</p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</div>
+
+<br>
+
+{% endblock content %}

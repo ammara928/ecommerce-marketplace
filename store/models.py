@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Avg
+
 
 
 class Customer(models.Model):
@@ -34,6 +36,19 @@ class Product(models.Model):
 
         return url
 
+    from django.db.models import Avg
+
+
+@property
+def average_rating(self):
+
+    return self.reviews.aggregate(
+        average=Avg('rating')
+    )['average'] or 0
+
+@property
+def review_count(self):
+        return self.reviews.count()
 
 class Order(models.Model):
     customer = models.ForeignKey(
@@ -108,7 +123,34 @@ class ShippingAddress(models.Model):
     city = models.CharField(max_length=200)
     state = models.CharField(max_length=200)
     zipcode = models.CharField(max_length=200)
+    country= models.CharField(max_length=100)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.address
+
+
+
+class Review(models.Model):
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+
+    customer = models.ForeignKey(
+        Customer,
+        on_delete=models.CASCADE
+    )
+
+    rating = models.PositiveIntegerField()
+
+    comment = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('product', 'customer')
+
+    def __str__(self):
+        return f"{self.product.name} - {self.rating} stars"

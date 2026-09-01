@@ -1,0 +1,227 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+
+<div class="container mt-4">
+
+    <h2>
+        Welcome, {{ request.user.username }} 👋
+    </h2>
+
+    <p>
+        Manage your account and view your purchases.
+    </p>
+
+
+    <!-- DASHBOARD STATISTICS -->
+
+    <div class="row mt-4">
+
+        <div class="col-md-4">
+
+            <div class="box-element text-center">
+
+                <h5>Total Orders</h5>
+
+                <h2>
+                    {{ total_orders }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="box-element text-center">
+
+                <h5>Total Spent</h5>
+
+                <h2>
+                    ${{ total_spent|floatformat:2 }}
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <div class="box-element text-center">
+
+                <h5>Email</h5>
+
+                <p>
+                    {{ customer.email }}
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- PURCHASED PRODUCTS -->
+
+    <div class="box-element mt-4">
+
+        <h3>🛍️ My Purchased Products</h3>
+
+        <hr>
+
+
+        {% if purchased_items %}
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Purchase Date</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for item in purchased_items %}
+
+                <tr>
+
+                    <td>
+
+                        {% if item.product.image %}
+
+                        <img
+                            src="{{ item.product.image.url }}"
+                            width="50"
+                        >
+
+                        {% endif %}
+
+                        {{ item.product.name }}
+                        {% for item in purchased_items %}
+
+    <div class="row mb-3">
+
+        <div class="col-md-8">
+
+            <h5>{{ item.product.name }}</h5>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <a href="{% url 'add_review' item.product.id %}"
+               class="btn btn-warning">
+
+                ⭐ Write Review
+
+            </a>
+
+        </div>
+
+    </div>
+
+{% endfor %}
+
+                    </td>
+
+
+                    <td>
+                        ${{ item.product.price }}
+                    </td>
+
+
+                    <td>
+                        {{ item.quantity }}
+                    </td>
+
+
+                    <td>
+                        ${{ item.get_total }}
+                    </td>
+
+
+                    <td>
+                        {{ item.order.date_ordered }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+            <p>
+                You haven't purchased any products yet.
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- ORDER HISTORY -->
+
+    <div class="box-element mt-4">
+
+        <h3>📦 Order History</h3>
+
+        <hr>
+
+        {% for order in orders %}
+
+        <div class="border p-3 mb-2">
+
+            <strong>
+                Order ID:
+            </strong>
+
+            {{ order.id }}
+
+            <br>
+
+            <strong>
+                Date:
+            </strong>
+
+            {{ order.date_ordered }}
+
+            <br>
+
+            <strong>
+                Total:
+            </strong>
+
+            ${{ order.get_cart_total }}
+
+        </div>
+
+        {% empty %}
+
+        <p>
+            No completed orders yet.
+        </p>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

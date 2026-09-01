@@ -100,3 +100,15 @@ h1,h2,h3,h4,h5,h6{
 .hidden{
 	display: none!important;
 }
+
+.success-message {
+    display: none;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: green;
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    z-index: 9999;
+}

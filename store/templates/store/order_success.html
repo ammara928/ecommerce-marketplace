@@ -1,0 +1,43 @@
+{% extends 'store/main.html' %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-lg-12">
+
+        <div class="box-element text-center">
+
+            <h2>🎉 Order Completed Successfully!</h2>
+
+            <p>
+                Thank you for your order.
+            </p>
+
+            <p>
+                Your order has been received successfully.
+            </p>
+
+            <br>
+
+            <a
+                class="btn btn-success"
+                href="{% url 'dashboard' %}"
+            >
+                View My Orders
+            </a>
+
+            <a
+                class="btn btn-outline-primary"
+                href="{% url 'store' %}"
+            >
+                Continue Shopping
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
